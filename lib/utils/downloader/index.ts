@@ -2,6 +2,7 @@ import Innertube from "youtubei.js";
 import type {
   FormatOptions,
   InnerTubeClient,
+  GetVideoInfoOptions,
 } from "youtubei.js/dist/src/types";
 import type { PassThrough } from "stream";
 import { createNativeReadable } from "../../common/createNativeReadable";
@@ -48,7 +49,9 @@ export async function stream<T extends boolean = false>(
       retrieve_player: false,
     }));
 
-  const info = await yt.getBasicInfo(vidId, client);
+  const info = client
+    ? await yt.getBasicInfo(vidId, { client })
+    : await yt.getBasicInfo(vidId);
 
   let fmt = info.chooseFormat(
     options || {
